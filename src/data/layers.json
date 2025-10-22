@@ -1,0 +1,121 @@
+{
+  "canvas": { "width": 1200, "height": 800 },
+  "layers": [
+    {
+      "id": "waterCycle",
+      "nodes": [
+        {
+          "id": "ocean",
+          "label": "Ocean",
+          "color": "#1e90ff",
+          "children": ["evaporation"],
+          "emoji": "🌊"
+        },
+        {
+          "id": "river",
+          "label": "River",
+          "color": "#00bfff",
+          "children": ["evaporation"],
+          "emoji": "🏞️"
+        },
+        {
+          "id": "sun",
+          "label": "Sun",
+          "color": "#FFD700",
+          "children": ["evaporation"],
+          "emoji": "🌞"
+        },
+        {
+          "id": "lake",
+          "label": "Lake",
+          "color": "#87ceeb",
+          "children": ["evaporation"],
+          "emoji": "💧"
+        }
+      ]
+    },
+    {
+      "id": "evaporation",
+      "nodes": [
+        {
+          "id": "cloud1",
+          "label": "Cloud",
+          "color": "#f0f8ff",
+          "children": ["condensation"],
+          "emoji": "☁️"
+        },
+        {
+          "id": "cloud2",
+          "label": "Cloud",
+          "color": "#f0f8ff",
+          "children": ["condensation"],
+          "emoji": "☁️"
+        },
+        {
+          "id": "cloud3",
+          "label": "Cloud",
+          "color": "#f0f8ff",
+          "children": ["condensation"],
+          "emoji": "☁️"
+        }
+      ]
+    },
+    {
+      "id": "condensation",
+      "nodes": [
+        {
+          "id": "rain1",
+          "label": "Rainfall",
+          "color": "#87cefa",
+          "children": ["collection"],
+          "emoji": "🌧️"
+        },
+        {
+          "id": "rain2",
+          "label": "Rainfall",
+          "color": "#87cefa",
+          "children": ["collection"],
+          "emoji": "🌧️"
+        }
+      ]
+    },
+    {
+      "id": "collection",
+      "nodes": [
+        {
+          "id": "river2",
+          "label": "River",
+          "color": "#00bfff",
+          "children": ["plants"],
+          "emoji": "🏞️"
+        },
+        {
+          "id": "groundwater",
+          "label": "Groundwater",
+          "color": "#008b8b",
+          "children": ["plants"],
+          "emoji": "💧"
+        }
+      ]
+    },
+    {
+      "id": "plants",
+      "nodes": [
+        {
+          "id": "tree1",
+          "label": "Tree",
+          "color": "#228b22",
+          "children": ["evaporation"],
+          "emoji": "🌳"
+        },
+        {
+          "id": "tree2",
+          "label": "Tree",
+          "color": "#32cd32",
+          "children": ["evaporation"],
+          "emoji": "🌳"
+        }
+      ]
+    }
+  ]
+}
