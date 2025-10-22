@@ -1,4 +1,5 @@
-import { Circle, Text, Group } from "react-konva";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Group, Circle, Text } from "react-konva";
 
 interface NodeProps {
   node: {
@@ -16,16 +17,14 @@ interface NodeProps {
 }
 
 const Node = ({ node, stageWidth, stageHeight, onClick, x, y }: NodeProps) => {
-  const radius = (50 / 1200) * stageWidth; // Node size scales with canvas
-  const fontSize = (16 / 1200) * stageWidth; // Label font size scales too
+  const radius = (50 / 1200) * stageWidth;
+  const fontSize = (16 / 1200) * stageWidth;
   const posX = x ?? stageWidth / 2;
   const posY = y ?? stageHeight / 2;
 
   return (
     <Group
-      x={posX}
-      y={posY}
-      onClick={onClick}
+      {...({ x: posX, y: posY, onClick } as any)} // TS-safe
       onMouseEnter={(e) => {
         const stage = e.target.getStage();
         if (stage) stage.container().style.cursor = "pointer";
@@ -35,7 +34,6 @@ const Node = ({ node, stageWidth, stageHeight, onClick, x, y }: NodeProps) => {
         if (stage) stage.container().style.cursor = "default";
       }}
     >
-      {/* Node circle */}
       <Circle
         radius={radius}
         fill={node.color}
@@ -43,7 +41,6 @@ const Node = ({ node, stageWidth, stageHeight, onClick, x, y }: NodeProps) => {
         shadowColor="#00000040"
       />
 
-      {/* Optional emoji centered */}
       {node.emoji && (
         <Text
           text={node.emoji}
@@ -53,15 +50,14 @@ const Node = ({ node, stageWidth, stageHeight, onClick, x, y }: NodeProps) => {
         />
       )}
 
-      {/* Label below the circle */}
       <Text
         text={node.label}
         fontSize={fontSize}
         fill="white"
         align="center"
         x={-radius}
-        y={radius + 6} // 6px spacing below circle
-        width={radius * 2} // center the text below the node
+        y={radius + 6}
+        width={radius * 2}
       />
     </Group>
   );

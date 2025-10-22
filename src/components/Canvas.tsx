@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Stage, Layer } from "react-konva";
-import { motion } from "framer-motion";
 import Node from "./Node";
 import { useState, useEffect, useRef } from "react";
 import { useGesture } from "@use-gesture/react";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "@react-spring/web";
 
 interface NodeData {
   id: string;
   label: string;
   color: string;
   children: string[];
+  emoji?: string;
 }
 
 interface LayerData {
@@ -20,7 +21,7 @@ interface LayerData {
 interface CanvasProps {
   layerData: LayerData;
   handleZoomIn: (childLayerId: string) => void;
-  handleZoomOut: () => void;
+  handleZoomOut?: () => void;
 }
 
 function computeCirclePositions(
@@ -78,21 +79,30 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
     centerY
   );
 
+  const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    handleZoomOut?.();
+  };
+
   return (
-    <motion.div
+    <div
       ref={containerRef}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 1.2 }}
-      transition={{ duration: 0.5 }}
+      onContextMenu={onRightClick}
       className="w-full h-full flex justify-center items-center"
     >
       <animated.div
-        style={{ scale: springProps.scale, x: springProps.x, y: springProps.y }}
+        style={{
+          scale: springProps.scale,
+          x: springProps.x,
+          y: springProps.y,
+          width: "100%",
+          height: "100%",
+        }}
       >
-        <Stage width={stageSize.width} height={stageSize.height}>
-          <Layer>
-            {/* Central node */}
+        <Stage
+          {...({ width: stageSize.width, height: stageSize.height } as any)}
+        >
+          <Layer {...({} as any)}>
             <Node
               node={{
                 id: "center",
@@ -108,7 +118,6 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
               y={centerY}
             />
 
-            {/* Circular nodes */}
             {layerData.nodes.map((node, idx) => (
               <Node
                 key={node.id}
@@ -125,7 +134,7 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
           </Layer>
         </Stage>
       </animated.div>
-    </motion.div>
+    </div>
   );
 };
 
