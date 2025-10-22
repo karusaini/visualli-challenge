@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Stage, Layer } from "react-konva";
 import Node from "./Node";
 import { useState, useEffect, useRef } from "react";
@@ -51,6 +52,7 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
 
   const [springProps, api] = useSpring(() => ({ scale: 1, x: 0, y: 0 }));
 
+  // Responsive stage
   useEffect(() => {
     const handleResize = () =>
       setStageSize({
@@ -61,6 +63,7 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Gestures: pinch + drag
   useGesture(
     {
       onPinch: ({ offset: [d] }) => api.start({ scale: 1 + d / 200 }),
@@ -79,15 +82,42 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
     centerY
   );
 
+  // Right-click to zoom out
   const onRightClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     handleZoomOut?.();
+  };
+
+  // Scroll wheel for zoom in/out on nodes
+  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    layerData.nodes.forEach((node, idx) => {
+      const dx = mouseX - nodePositions[idx].x;
+      const dy = mouseY - nodePositions[idx].y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const nodeRadius = (50 / 1200) * stageSize.width;
+
+      if (distance <= nodeRadius) {
+        if (e.deltaY < 0) {
+          // Scroll up → zoom in
+          node.children.length && handleZoomIn(node.children[0]);
+        } else if (e.deltaY > 0) {
+          // Scroll down → zoom out
+          handleZoomOut?.();
+        }
+      }
+    });
   };
 
   return (
     <div
       ref={containerRef}
       onContextMenu={onRightClick}
+      onWheel={onWheel}
       className="w-full h-full flex justify-center items-center"
     >
       <animated.div
@@ -103,6 +133,7 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
           {...({ width: stageSize.width, height: stageSize.height } as any)}
         >
           <Layer {...({} as any)}>
+            {/* Central node */}
             <Node
               node={{
                 id: "center",
@@ -118,6 +149,7 @@ const Canvas = ({ layerData, handleZoomIn, handleZoomOut }: CanvasProps) => {
               y={centerY}
             />
 
+            {/* Circular nodes */}
             {layerData.nodes.map((node, idx) => (
               <Node
                 key={node.id}

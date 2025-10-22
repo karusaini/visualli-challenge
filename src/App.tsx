@@ -46,7 +46,21 @@ function App() {
       className="w-screen h-screen flex flex-col items-center justify-center transition-all duration-500"
       style={{ background: layerGradients[currentLayerId] || "#ffffff" }}
     >
-      <UIControls layerHistory={layerHistory} goHome={goHome} />
+      <UIControls
+        layerHistory={layerHistory}
+        goHome={goHome}
+        onSelectLayer={(layerId) => {
+          if (animating) return;
+          setAnimating(true);
+          const idx = layerHistory.indexOf(layerId);
+          if (idx === -1) return setAnimating(false);
+          setTimeout(() => {
+            setLayerHistory(layerHistory.slice(0, idx + 1));
+            setCurrentLayerId(layerId);
+            setAnimating(false);
+          }, 500);
+        }}
+      />
       <AnimatePresence mode="wait">
         <Canvas
           key={currentLayerId}
