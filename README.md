@@ -59,7 +59,7 @@ The app is fully **responsive** and **interactive**, offering a rich visual expe
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/visualli-challenge.git
+git clone https://github.com/karusaini/visualli-challenge
 cd visualli-challenge
 
 # Install dependencies
@@ -110,4 +110,6 @@ Frontend Developer — passionate about crafting interactive and intuitive user 
 📧 Email: hello@karinasaini.me
 
 GitHub: https://github.com/karusaini/visualli-challenge
+
+LiveDemo: https://visualli-challenge.vercel.app
 ```
