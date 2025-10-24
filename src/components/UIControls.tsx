@@ -1,5 +1,3 @@
-import React from "react";
-
 interface UIControlsProps {
   layerHistory: string[];
   goHome: () => void;
@@ -13,7 +11,6 @@ const UIControls = ({
 }: UIControlsProps) => {
   return (
     <div className="fixed top-4 left-4 flex flex-col items-center space-y-4 z-50">
-      {/* Home Button */}
       <button
         onClick={goHome}
         className="w-10 h-10 rounded-full bg-yellow-400 text-white flex items-center justify-center shadow-lg hover:bg-yellow-500 transition"
@@ -21,7 +18,6 @@ const UIControls = ({
         🏠
       </button>
 
-      {/* Layer bubbles */}
       {layerHistory.map((layerId, idx) => (
         <button
           key={idx}

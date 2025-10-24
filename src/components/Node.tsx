@@ -24,7 +24,7 @@ const Node = ({ node, stageWidth, stageHeight, onClick, x, y }: NodeProps) => {
 
   return (
     <Group
-      {...({ x: posX, y: posY, onClick } as any)} // TS-safe
+      {...({ x: posX, y: posY, onClick } as any)}
       onMouseEnter={(e) => {
         const stage = e.target.getStage();
         if (stage) stage.container().style.cursor = "pointer";

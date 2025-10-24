@@ -1,73 +1,113 @@
-# React + TypeScript + Vite
+# Visualli.ai Frontend Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🧭 Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is a **multi-layered interactive visualization** inspired by **Google Maps’ smooth zooming behavior**.  
+Users can explore hierarchical data layers (e.g., _Water Cycle → Cloud Formation → Raindrop Process_) through intuitive zoom-in / zoom-out interactions with animated transitions.
 
-## React Compiler
+The app is fully **responsive** and **interactive**, offering a rich visual experience for desktop and mobile users.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🧩 Design
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🎨 UI / UX Approach
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Each **layer** is displayed on a central **canvas** with circular nodes arranged radially around a core concept.
+- Clicking (or scrolling up) on a node **zooms into** the next layer.
+- Right-clicking (or scrolling down) **zooms out** to the parent layer.
+- A vertical sidebar shows **layer history as bubbles** — clicking a bubble jumps to that layer.
+- **Background color transitions** smoothly based on the active node’s color.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 💫 Animation Details
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Smooth **fade-in/out** transitions between layers (`framer-motion`).
+- **Node hover animations**: subtle scale-up and glow.
+- **Zoom-in/out transitions**: physics-based spring animation (`react-spring`).
+- **Emoji animation**: small bounce on zoom for visual appeal.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🧱 Architecture
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `App.tsx` → Handles state, layer navigation, and background
+- `Canvas.tsx` → Konva canvas, gesture handling, animations
+- `Node.tsx` → Node rendering (emoji + label + hover effects)
+- `UIControls.tsx` → Home button + layer navigation bubbles
+- `data/layers.json` → Layer hierarchy and node definitions
+- `data/layerGradients.ts` → Background gradients per layer
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## ⚙️ Tech Choices
+
+| Category       | Choice                           | Justification                                                    |
+| -------------- | -------------------------------- | ---------------------------------------------------------------- |
+| Framework      | **React + TypeScript**           | Component-based architecture and type safety for maintainability |
+| Canvas Library | **React-Konva**                  | Efficient 2D rendering for interactive nodes                     |
+| Animation      | **Framer Motion + React Spring** | Smooth, physics-based animations                                 |
+| Styling        | **TailwindCSS**                  | Rapid responsive UI development                                  |
+| Gestures       | **@use-gesture/react**           | Pinch and drag support on desktop and mobile                     |
+| Build Tool     | **Vite**                         | Fast development and optimized production builds                 |
+| Deployment     | **Vercel**                       | Zero-config frontend deployment                                  |
+
+---
+
+## ✅ Tests
+
+### 🧩 Run Locally
+
+```bash
+# Clone the repository
+git clone https://github.com/<your-username>/visualli-challenge.git
+cd visualli-challenge
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+
+Build & Preview
+# Type-check
+npm run typecheck
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+
+
+Manual Verification
+
+1. Hover on nodes → Node glows slightly
+
+2. Click a node → Smooth zoom into child layer
+
+3. Right-click → Zooms out to previous layer
+
+4. Click Home button → Returns to top-level layer
+
+5. Resize browser → Layout adapts dynamically
+
+6. Pinch/scroll on mobile → Zoom gestures work correctly
+
+
+Working Code
+
+The project is fully responsive and works on modern browsers (Chrome, Safari, Edge, Firefox) and mobile devices.
+Run locally with npm run dev or deploy to Vercel for production.
+
+
+Author
+
+Karina Saini
+Frontend Developer — passionate about crafting interactive and intuitive user experiences.
+
+📧 Email: hello@karinasaini.me
+
+GitHub: https://github.com/karusaini/visualli-challenge
 ```
